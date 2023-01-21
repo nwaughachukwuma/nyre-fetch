@@ -26,7 +26,7 @@ nyreFetch
   .then((res) => res.json())
   .then((json) => console.log(json));
 
-// 2. download a file using a stream
+// 2. download a file using streams
 import fs from "node:fs";
 
 const url = "https://example.com/file.pdf";
