@@ -1,6 +1,6 @@
 # Nyre-Fetch
 
-Nyre-Fetch is a simple Node.js wrapper built on top of node-fetch with a few extra features.
+Nyre-Fetch is a simple node-fetch wrapper with a few extra features.
 
 ## Installation
 

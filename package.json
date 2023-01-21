@@ -1,18 +1,17 @@
 {
   "name": "nyre-fetch",
   "version": "0.1.0",
-  "description": "A simple Node.js wrapper built on node-fetch with a few extra features.",
+  "description": "Simple node-fetch wrapper with a few extra features",
   "author": "Chukwuma Nwaugha <nwaughac@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/nwaughachukwuma/nyre-fetch"
   },
   "license": "MIT",
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "exports": "./lib/index.js",
-
   "scripts": {
     "tsc": "tsc",
     "build": "tsup"
