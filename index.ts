@@ -1,6 +1,10 @@
+import type { Transform } from "node:stream";
+import { pipeline, PassThrough, Readable } from "node:stream";
+import { promisify } from "node:util";
 import nodeFetch, { type RequestInit, type Response } from "node-fetch";
 import type { AbortSignal } from "abort-controller";
 
+const streamPipeline = promisify(pipeline);
 const TEN_MEGABYTES = 1000 * 1000 * 10;
 type StreamOptions = RequestInit & {
   signal?: AbortSignal;
@@ -44,11 +48,13 @@ const nyreFetch = {
       signal: options?.signal,
       highWaterMark: options?.highWaterMark ?? TEN_MEGABYTES,
     });
-
-    if (!response.ok || !response.body) {
-      throw new Error(`Failed to read stream path: ${source}`);
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
-    return response.body;
+    if (!response.body) {
+      throw new Error(`No readble stream at source: ${source}`);
+    }
+    return new ExtendReadableStream(response.body);
   },
 };
 
@@ -65,6 +71,26 @@ export class Client {
   }
   async stream(path: string, options?: StreamOptions) {
     return nyreFetch.stream(getFullURL(this.baseUrl, path), options);
+  }
+}
+
+export class ExtendReadableStream extends Readable {
+  constructor(private readableStream: NodeJS.ReadableStream) {
+    super(readableStream);
+  }
+  async pipeTo(writableStream: NodeJS.WritableStream): Promise<void> {
+    return streamPipeline(
+      this.readableStream,
+      new PassThrough(),
+      writableStream
+    );
+  }
+  async pipeThrough(transformStream: Transform): Promise<void> {
+    return streamPipeline(
+      this.readableStream,
+      new PassThrough(),
+      transformStream
+    );
   }
 }
 
