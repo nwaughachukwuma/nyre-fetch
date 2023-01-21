@@ -10,9 +10,9 @@ npm install nyre-fetch
 
 ## Features
 
-- Supports everything node-fetch supports
-- Simplified API for HTTP methods (get, post, put, patch, delete)
-- Supports streams.pipeTo and streams.pipeThrough
+- Supports everything [node-fetch](https://github.com/node-fetch/node-fetch) supports
+- Simplified API for HTTP methods (`get`, `post`, `put`, `delete`, & `head`)
+- Supports `stream.pipeTo` and `stream.pipeThrough`
 - Allows setting base URL for all requests
 
 ## Usage
@@ -33,13 +33,4 @@ const url = "https://example.com/file.pdf";
 const readableStream = await nyreFetch.stream(url);
 const writeStream = fs.createWriteStream("./file.pdf");
 await readableStream.pipeTo(writeStream);
-```
-
-### Supports Streams
-
-```js
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
 ```
