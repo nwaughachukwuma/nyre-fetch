@@ -1,4 +1,4 @@
-import type { Transform } from "node:stream";
+import type { PipelineOptions, Transform } from "node:stream";
 import { pipeline, PassThrough, Readable } from "node:stream";
 import { promisify } from "node:util";
 import nodeFetch, { type RequestInit, type Response } from "node-fetch";
@@ -78,18 +78,26 @@ export class ExtendReadableStream extends Readable {
   constructor(private readableStream: NodeJS.ReadableStream) {
     super(readableStream);
   }
-  async pipeTo(writableStream: NodeJS.WritableStream): Promise<void> {
+  async pipeTo(
+    writableStream: NodeJS.WritableStream,
+    options?: PipelineOptions
+  ): Promise<void> {
     return streamPipeline(
       this.readableStream,
       new PassThrough(),
-      writableStream
+      writableStream,
+      options
     );
   }
-  async pipeThrough(transformStream: Transform): Promise<void> {
+  async pipeThrough(
+    transformStream: Transform,
+    options?: PipelineOptions
+  ): Promise<void> {
     return streamPipeline(
       this.readableStream,
       new PassThrough(),
-      transformStream
+      transformStream,
+      options
     );
   }
 }
