@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "es2020",
+        "lib": ["es2020"],
+        "moduleResolution": "node",
+        "outDir": "./lib",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "noImplicitReturns": true,
+        "esModuleInterop": true,
+        "noEmit": false,
+        "sourceMap": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+    },
+    "include": ["index.ts"],
+    "exclude": ["node_modules", "lib"]
+}

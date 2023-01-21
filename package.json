@@ -1,14 +1,24 @@
 {
   "name": "nyre-fetch",
   "version": "0.1.0",
-  "description": "A simple Node.js wrapper for node-fetch with a few extra features.",
-  "main": "index.js",
-  "type": "module",
+  "description": "A simple Node.js wrapper built on node-fetch with a few extra features.",
+  "author": "Chukwuma Nwaugha <nwaughac@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
   "license": "MIT",
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "exports": "./lib/index.js",
+
   "scripts": {
-    "build": "tsc"
+    "tsc": "tsc",
+    "build": "tsc -b ."
   },
   "files": [],
+  "keywords": [],
   "dependencies": {
     "abort-controller": "^3.0.0",
     "node-fetch": "^3.3.0"
@@ -29,4 +39,3 @@
     "node": ">=14"
   }
 }
-
