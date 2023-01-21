@@ -1,6 +1,6 @@
 {
   "name": "nyre-fetch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple node-fetch wrapper with a few extra features",
   "author": "Chukwuma Nwaugha <nwaughac@gmail.com>",
   "repository": {
@@ -11,13 +11,29 @@
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
-  "exports": "./lib/index.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "tsc": "tsc",
     "build": "tsup"
   },
-  "files": [],
-  "keywords": [],
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "fetch",
+    "node-fetch",
+    "http",
+    "https",
+    "request",
+    "streams"
+  ],
+  "sideEffects": true,
   "dependencies": {
     "abort-controller": "^3.0.0",
     "node-fetch": "^3.3.0"
