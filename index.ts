@@ -71,6 +71,21 @@ export class Client {
   async stream(path: string, options?: StreamOptions) {
     return nyreFetch.stream(this.getURL(this.baseUrl, path), options);
   }
+  post(path: string, body: any, options?: RequestInit) {
+    return nyreFetch.post(this.getURL(this.baseUrl, path), body, options);
+  }
+  get(path: string, options?: RequestInit) {
+    return nyreFetch.get(this.getURL(this.baseUrl, path), options);
+  }
+  put(path: string, body: any, options?: RequestInit) {
+    return nyreFetch.put(this.getURL(this.baseUrl, path), body, options);
+  }
+  delete(path: string, options?: RequestInit) {
+    return nyreFetch.delete(this.getURL(this.baseUrl, path), options);
+  }
+  head(path: string, options?: RequestInit) {
+    return nyreFetch.head(this.getURL(this.baseUrl, path), options);
+  }
 }
 
 export class ExtendReadableStream extends Readable {
