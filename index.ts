@@ -19,28 +19,28 @@ export async function fetch(
 }
 
 const nyreFetch = {
-  post(path: string, body: any, options?: RequestInit) {
-    return fetch(path, {
+  post(url: string, body: any, options?: RequestInit) {
+    return fetch(url, {
       ...options,
       method: "POST",
       body: JSON.stringify(body),
     });
   },
-  get(path: string, options?: RequestInit) {
-    return fetch(path, { ...options, method: "GET" });
+  get(url: string, options?: RequestInit) {
+    return fetch(url, { ...options, method: "GET" });
   },
-  put(path: string, body: any, options?: RequestInit) {
-    return fetch(path, {
+  put(url: string, body: any, options?: RequestInit) {
+    return fetch(url, {
       ...options,
       method: "PUT",
       body: JSON.stringify(body),
     });
   },
-  delete(path: string, options?: RequestInit) {
-    return fetch(path, { ...options, method: "DELETE" });
+  delete(url: string, options?: RequestInit) {
+    return fetch(url, { ...options, method: "DELETE" });
   },
-  head(path: string, options?: RequestInit) {
-    return fetch(path, { ...options, method: "HEAD" });
+  head(url: string, options?: RequestInit) {
+    return fetch(url, { ...options, method: "HEAD" });
   },
   async stream(source: string, options?: StreamOptions) {
     const response = await fetch(source, {
@@ -58,19 +58,18 @@ const nyreFetch = {
   },
 };
 
-function getFullURL(baseUrl: string, path: string) {
-  baseUrl = baseUrl.replace(/\/$/, "");
-  path = path.replace(/^\//, "");
-  return `${baseUrl}/${path}`;
-}
-
 export class Client {
   constructor(private baseUrl: string) {}
+  private getURL(baseUrl: string, path: string) {
+    baseUrl = baseUrl.replace(/\/$/, "");
+    path = path.replace(/^\//, "");
+    return `${baseUrl}/${path}`;
+  }
   fetch(path: string, options?: RequestInit) {
-    return fetch(getFullURL(this.baseUrl, path), options);
+    return fetch(this.getURL(this.baseUrl, path), options);
   }
   async stream(path: string, options?: StreamOptions) {
-    return nyreFetch.stream(getFullURL(this.baseUrl, path), options);
+    return nyreFetch.stream(this.getURL(this.baseUrl, path), options);
   }
 }
 
