@@ -33,4 +33,14 @@ const url = "https://example.com/file.pdf";
 const readableStream = await nyreFetch.stream(url);
 const writeStream = fs.createWriteStream("./file.pdf");
 await readableStream.pipeTo(writeStream);
+
+// 3. set base URL for all requests
+import { Client } from "nyre-fetch";
+
+const client = new Client("https://example.com");
+
+client
+  .get("/api/users")
+  .then((res) => res.json())
+  .then((json) => console.log(json));
 ```

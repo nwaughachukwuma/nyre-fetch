@@ -1,6 +1,6 @@
 {
   "name": "nyre-fetch",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Simple node-fetch wrapper with a few extra features",
   "author": "Chukwuma Nwaugha <nwaughac@gmail.com>",
   "repository": {
