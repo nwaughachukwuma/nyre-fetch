@@ -85,6 +85,12 @@ test("should throw an error when the source is not a readable stream", async (t)
   await t.throwsAsync(client.stream("/posts/not-found"));
 });
 
+test("should handle error for the stream", async (t) => {
+  const error = await t.throwsAsync(client.stream("/posts/404"));
+  t.truthy(error);
+  t.is(error.message, "Not Found");
+});
+
 test("should handle abort signal for the stream", async (t) => {
   const controller = new AbortController();
   const stream = await client.stream("/posts/1", { signal: controller.signal });

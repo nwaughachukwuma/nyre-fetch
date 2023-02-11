@@ -67,7 +67,7 @@ export class Client {
   fetch(path: string, options?: RequestInit) {
     return fetch(this.getURL(this.baseUrl, path), options);
   }
-  async stream(path: string, options?: StreamOptions) {
+  stream(path: string, options?: StreamOptions) {
     return nyreFetch.stream(this.getURL(this.baseUrl, path), options);
   }
   post(path: string, body: any, options?: RequestInit) {
