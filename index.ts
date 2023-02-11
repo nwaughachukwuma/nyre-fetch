@@ -1,10 +1,9 @@
 import type { PipelineOptions, Transform } from "node:stream";
-import { pipeline, PassThrough, Readable } from "node:stream";
-import { promisify } from "node:util";
+import { PassThrough, Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import nodeFetch, { type RequestInit, type Response } from "node-fetch";
 import type { AbortSignal } from "abort-controller";
 
-const streamPipeline = promisify(pipeline);
 const TEN_MEGABYTES = 1000 * 1000 * 10;
 type StreamOptions = RequestInit & {
   signal?: AbortSignal;
@@ -68,7 +67,7 @@ export class Client {
   fetch(path: string, options?: RequestInit) {
     return fetch(this.getURL(this.baseUrl, path), options);
   }
-  async stream(path: string, options?: StreamOptions) {
+  stream(path: string, options?: StreamOptions) {
     return nyreFetch.stream(this.getURL(this.baseUrl, path), options);
   }
   post(path: string, body: any, options?: RequestInit) {
@@ -89,30 +88,34 @@ export class Client {
 }
 
 export class ExtendReadableStream extends Readable {
-  constructor(private readableStream: NodeJS.ReadableStream) {
+  constructor(protected readableStream: NodeJS.ReadableStream) {
     super(readableStream);
   }
   async pipeTo(
     writableStream: NodeJS.WritableStream,
     options?: PipelineOptions
   ): Promise<void> {
-    return streamPipeline(
-      this.readableStream,
-      new PassThrough(),
-      writableStream,
-      options
-    );
+    return options
+      ? pipeline(
+          this.readableStream,
+          new PassThrough(),
+          writableStream,
+          options
+        )
+      : pipeline(this.readableStream, new PassThrough(), writableStream);
   }
   async pipeThrough(
     transformStream: Transform,
     options?: PipelineOptions
   ): Promise<void> {
-    return streamPipeline(
-      this.readableStream,
-      new PassThrough(),
-      transformStream,
-      options
-    );
+    return options
+      ? pipeline(
+          this.readableStream,
+          new PassThrough(),
+          transformStream,
+          options
+        )
+      : pipeline(this.readableStream, new PassThrough(), transformStream);
   }
 }
 
