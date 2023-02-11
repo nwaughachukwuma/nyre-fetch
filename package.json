@@ -25,7 +25,8 @@
     "test": "ava"
   },
   "files": [
-    "lib"
+    "lib",
+    "!lib/index.test-d.ts"
   ],
   "keywords": [
     "fetch",
