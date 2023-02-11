@@ -1,10 +1,9 @@
 import type { PipelineOptions, Transform } from "node:stream";
-import { pipeline, PassThrough, Readable } from "node:stream";
-import { promisify } from "node:util";
+import { PassThrough, Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import nodeFetch, { type RequestInit, type Response } from "node-fetch";
 import type { AbortSignal } from "abort-controller";
 
-const streamPipeline = promisify(pipeline);
 const TEN_MEGABYTES = 1000 * 1000 * 10;
 type StreamOptions = RequestInit & {
   signal?: AbortSignal;
@@ -89,25 +88,27 @@ export class Client {
 }
 
 export class ExtendReadableStream extends Readable {
-  constructor(private readableStream: NodeJS.ReadableStream) {
+  constructor(protected readableStream: NodeJS.ReadableStream) {
     super(readableStream);
   }
   async pipeTo(
     writableStream: NodeJS.WritableStream,
     options?: PipelineOptions
   ): Promise<void> {
-    return streamPipeline(
-      this.readableStream,
-      new PassThrough(),
-      writableStream,
-      options
-    );
+    return options
+      ? pipeline(
+          this.readableStream,
+          new PassThrough(),
+          writableStream,
+          options
+        )
+      : pipeline(this.readableStream, new PassThrough(), writableStream);
   }
   async pipeThrough(
     transformStream: Transform,
     options?: PipelineOptions
   ): Promise<void> {
-    return streamPipeline(
+    return pipeline(
       this.readableStream,
       new PassThrough(),
       transformStream,
