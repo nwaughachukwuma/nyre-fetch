@@ -7,6 +7,6 @@ export default defineConfig({
   entryPoints: ["index.ts"],
   format: ["esm", "cjs"],
   outDir: "lib",
-  target: "node14",
+  target: "node16",
   external: ["node-fetch", "abort-controller"],
 });
