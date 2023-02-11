@@ -60,14 +60,18 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: install
-      - name: tsc
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: tsc
       - name: build
         uses: borales/actions-yarn@v4
         with:
           cmd: build
+      - name: tsc
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: tsc
+      - name: test
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test
       - uses: actions/upload-artifact@v3
         with:
           name: lib
