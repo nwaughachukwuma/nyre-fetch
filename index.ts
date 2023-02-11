@@ -108,12 +108,14 @@ export class ExtendReadableStream extends Readable {
     transformStream: Transform,
     options?: PipelineOptions
   ): Promise<void> {
-    return pipeline(
-      this.readableStream,
-      new PassThrough(),
-      transformStream,
-      options
-    );
+    return options
+      ? pipeline(
+          this.readableStream,
+          new PassThrough(),
+          transformStream,
+          options
+        )
+      : pipeline(this.readableStream, new PassThrough(), transformStream);
   }
 }
 

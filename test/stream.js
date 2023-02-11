@@ -1,5 +1,5 @@
 import test from "ava";
-import { Writable } from "node:stream";
+import { Writable, Transform } from "node:stream";
 import { Client } from "../lib/index.js";
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
@@ -53,6 +53,26 @@ test("should pipe data from a source to a writable stream", async (t) => {
   });
 
   await stream.pipeTo(writeStream);
+  const post = JSON.parse(Buffer.concat(data).toString());
+  t.truthy(post.id);
+  t.truthy(post.userId);
+  t.truthy(post.title);
+  t.truthy(post.body);
+});
+
+test("should pipe data from a source through a transform stream", async (t) => {
+  const stream = await client.stream("/posts/1");
+  const transform = new Transform({
+    transform(chunk, _, cb) {
+      this.push(chunk);
+      cb();
+    },
+  });
+  const data = [];
+  transform.on("data", (chunk) => {
+    data.push(chunk);
+  });
+  await stream.pipeThrough(transform);
   const post = JSON.parse(Buffer.concat(data).toString());
   t.truthy(post.id);
   t.truthy(post.userId);
