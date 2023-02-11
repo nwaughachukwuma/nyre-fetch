@@ -1,5 +1,6 @@
-import test from "ava";
 import { Writable, Transform } from "node:stream";
+import { AbortController } from "abort-controller";
+import test from "ava";
 import { Client } from "../lib/index.js";
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
@@ -78,4 +79,23 @@ test("should pipe data from a source through a transform stream", async (t) => {
   t.truthy(post.userId);
   t.truthy(post.title);
   t.truthy(post.body);
+});
+
+test("should throw an error when the source is not a readable stream", async (t) => {
+  await t.throwsAsync(client.stream("/posts/not-found"));
+});
+
+test("should handle abort signal for the stream", async (t) => {
+  const controller = new AbortController();
+  const stream = await client.stream("/posts/1", { signal: controller.signal });
+  const promise_ = new Promise((resolve, reject) => {
+    stream.readableStream.on("error", (err) => {
+      reject(err);
+    });
+    stream.readableStream.on("data", () => {
+      resolve();
+    });
+  });
+  controller.abort();
+  await t.throwsAsync(promise_);
 });
