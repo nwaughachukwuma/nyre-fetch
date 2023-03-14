@@ -1,6 +1,6 @@
 # Nyre-Fetch
 
-Nyre-Fetch is a simple node-fetch wrapper with a few extra features.
+Nyre-Fetch is a simple node-fetch wrapper with a few extra features ⚡️.
 
 ## Installation
 
