@@ -120,4 +120,8 @@ export class ExtendReadableStream extends Readable {
   }
 }
 
+export function createClient(baseUrl: string) {
+  return new Client(baseUrl);
+}
+
 export default nyreFetch;
