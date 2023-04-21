@@ -124,4 +124,20 @@ export function createClient(baseUrl: string) {
   return new Client(baseUrl);
 }
 
+export function handleInternalError(r: Response) {
+  class InternalError extends Error {
+    private cause: Response;
+    constructor(message: string) {
+      super(message);
+      this.name = "InternalError";
+      this.cause = r;
+    }
+    toString() {
+      return { cause: this.cause, message: this.message };
+    }
+  }
+  if (r.ok) return r;
+  throw new InternalError(r.statusText);
+}
+
 export default nyreFetch;
