@@ -8,5 +8,4 @@ export default defineConfig({
   format: ["esm", "cjs"],
   outDir: "lib",
   target: "node16",
-  external: ["node-fetch", "abort-controller"],
 });
