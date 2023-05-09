@@ -1,6 +1,6 @@
 # Nyre-Fetch
 
-Nyre-Fetch is a simple node-fetch wrapper with a few extra features ⚡️.
+Nyre-Fetch is a simple fetch wrapper with a few extra features ⚡️.
 
 ## Installation
 
@@ -10,7 +10,7 @@ npm install nyre-fetch
 
 ## Features
 
-- Supports everything [node-fetch](https://github.com/node-fetch/node-fetch) supports
+- Supports everything from node v18 fetch API
 - Simplified API for HTTP methods (`get`, `post`, `put`, `delete`, & `head`)
 - Supports `stream.pipeTo` and `stream.pipeThrough`
 - Allows setting base URL for all requests
