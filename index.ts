@@ -40,6 +40,7 @@ const nyreFetch = {
     const response = await fetch(source, {
       ...options,
       signal: options?.signal,
+      keepalive: true,
     });
     if (!response.ok) {
       throw new Error(response.statusText);
