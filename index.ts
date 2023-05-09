@@ -1,21 +1,16 @@
+declare let fetch: typeof import("undici").fetch;
 import type { PipelineOptions, Transform } from "node:stream";
+import type { RequestInit, Response } from "undici";
+import type { AbortSignal } from "abort-controller";
 import { PassThrough, Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import nodeFetch, { type RequestInit, type Response } from "node-fetch";
-import type { AbortSignal } from "abort-controller";
 
-const TEN_MEGABYTES = 1000 * 1000 * 10;
 type StreamOptions = RequestInit & {
   signal?: AbortSignal;
   highWaterMark?: number;
 };
 
-export async function fetch(
-  url: string,
-  options?: RequestInit
-): Promise<Response> {
-  return nodeFetch(url, { highWaterMark: TEN_MEGABYTES, ...options });
-}
+export { fetch };
 
 const nyreFetch = {
   post(url: string, body: any, options?: RequestInit) {
@@ -45,15 +40,14 @@ const nyreFetch = {
     const response = await fetch(source, {
       ...options,
       signal: options?.signal,
-      highWaterMark: options?.highWaterMark ?? TEN_MEGABYTES,
     });
     if (!response.ok) {
       throw new Error(response.statusText);
     }
     if (!response.body) {
-      throw new Error(`No readble stream at source: ${source}`);
+      throw new Error(`No readable stream at source: ${source}`);
     }
-    return new ExtendReadableStream(response.body);
+    return new ExtendReadableStream(Readable.from(response.body));
   },
 };
 
@@ -95,14 +89,15 @@ export class ExtendReadableStream extends Readable {
     writableStream: NodeJS.WritableStream,
     options?: PipelineOptions
   ): Promise<void> {
-    return options
-      ? pipeline(
-          this.readableStream,
-          new PassThrough(),
-          writableStream,
-          options
-        )
-      : pipeline(this.readableStream, new PassThrough(), writableStream);
+    if (!options) {
+      return pipeline(this.readableStream, new PassThrough(), writableStream);
+    }
+    return pipeline(
+      this.readableStream,
+      new PassThrough(),
+      writableStream,
+      options
+    );
   }
   async pipeThrough(
     transformStream: Transform,
