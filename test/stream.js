@@ -1,5 +1,4 @@
 import { Writable, Transform } from "node:stream";
-import { AbortController } from "abort-controller";
 import test from "ava";
 import { Client } from "../lib/index.js";
 
@@ -8,14 +7,14 @@ const client = new Client(BASE_URL);
 
 test("should stream data from a source", async (t) => {
   const stream = await client.stream("/posts/1");
-  let data = "";
+  let data = [];
   const readableStream = stream.readableStream;
   return new Promise((resolve, reject) => {
     readableStream.on("data", (chunk) => {
-      data += chunk.toString();
+      data.push(chunk);
     });
     readableStream.on("end", () => {
-      const post = JSON.parse(data);
+      const post = JSON.parse(Buffer.concat(data).toString());
       t.truthy(post.id);
       t.truthy(post.userId);
       t.truthy(post.title);
@@ -32,11 +31,11 @@ test("should stream data from a source", async (t) => {
 
 test("should stream data from a source [using async iterators]", async (t) => {
   const stream = await client.stream("/posts/1");
-  let data = "";
+  let data = [];
   for await (const chunk of stream.readableStream) {
-    data += chunk.toString();
+    data.push(chunk);
   }
-  const post = JSON.parse(data);
+  const post = JSON.parse(Buffer.concat(data).toString());
   t.truthy(post.id);
   t.truthy(post.userId);
   t.truthy(post.title);
@@ -92,16 +91,26 @@ test("should handle error for the stream", async (t) => {
 });
 
 test("should handle abort signal for the stream", async (t) => {
+  t.plan(2);
   const controller = new AbortController();
   const stream = await client.stream("/posts/1", { signal: controller.signal });
+
   const promise_ = new Promise((resolve, reject) => {
     stream.readableStream.on("error", (err) => {
       reject(err);
     });
-    stream.readableStream.on("data", () => {
+    stream.readableStream.on("end", () => {
       resolve();
     });
+    controller.signal.addEventListener("abort", () => {
+      reject(new Error("The operation was aborted."));
+    });
   });
+
   controller.abort();
+  promise_.catch((err) => {
+    t.is(err.message, "The operation was aborted.");
+  });
+
   await t.throwsAsync(promise_);
 });
