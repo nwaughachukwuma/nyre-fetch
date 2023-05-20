@@ -1,7 +1,7 @@
 import test from "ava";
-import { Client } from "../lib/index.js";
+import { createClient } from "../lib/index.js";
 
-const client = new Client("https://jsonplaceholder.typicode.com");
+const client = createClient("https://jsonplaceholder.typicode.com");
 
 test("should use client to make a GET request", async (t) => {
   const response = await client.get("/todos");

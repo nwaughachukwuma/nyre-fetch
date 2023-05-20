@@ -1,9 +1,9 @@
 import { Writable, Transform } from "node:stream";
 import test from "ava";
-import { Client } from "../lib/index.js";
+import { createClient } from "../lib/index.js";
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
-const client = new Client(BASE_URL);
+const client = createClient(BASE_URL);
 
 test("should stream data from a source", async (t) => {
   const stream = await client.stream("/posts/1");
