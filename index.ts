@@ -1,4 +1,4 @@
-declare let fetch: typeof import("undici").fetch;
+declare const fetch: typeof import("undici").fetch;
 import type { PipelineOptions, Transform } from "node:stream";
 import type { RequestInit, Response } from "undici";
 import type { AbortSignal } from "abort-controller";
@@ -9,8 +9,6 @@ type StreamOptions = RequestInit & {
   signal?: AbortSignal;
   highWaterMark?: number;
 };
-
-export { fetch };
 
 const nyreFetch = {
   post(url: string, body: any, options?: RequestInit) {
