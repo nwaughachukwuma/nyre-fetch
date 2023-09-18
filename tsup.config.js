@@ -7,5 +7,5 @@ export default defineConfig({
   entryPoints: ["index.ts"],
   format: ["esm", "cjs"],
   outDir: "lib",
-  target: "node16",
+  target: "node18",
 });
