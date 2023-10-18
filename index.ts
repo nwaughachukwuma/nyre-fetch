@@ -134,4 +134,12 @@ export function handleInternalError(r: Response) {
   throw new InternalError(r.statusText);
 }
 
+export type { Response };
+export function responseOk(r: Response) {
+  if (r.ok) return r;
+  throw new Error(
+    `HTTP Request Error - URL: ${r.url}, Headers: ${r.headers}, Status: ${r.status} ${r.statusText}`
+  );
+}
+
 export default nyreFetch;
