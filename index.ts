@@ -140,4 +140,6 @@ export function handleInternalError(r: Response) {
   throw new InternalError(r.statusText);
 }
 
+export type { Response };
+
 export default nyreFetch;
