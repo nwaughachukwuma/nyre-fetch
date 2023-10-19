@@ -31,9 +31,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: get-tag-branch
-        run: bash .github/scripts/tag_ref.sh ${{ github.ref }}
-      - run: echo "${{ toJSON(env) }}"
 
       - run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
