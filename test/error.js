@@ -2,6 +2,7 @@ import test from "ava";
 import nyreFetch, { handleInternalError } from "../lib/index.js";
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
+const HTTP_STATUS_BASE_URL = "https://httpstat-us.vercel.app";
 
 test("should return response with handleInternalError helper", async (t) => {
   const response = await nyreFetch
@@ -13,7 +14,7 @@ test("should return response with handleInternalError helper", async (t) => {
 
 test("properly handle 400", async (t) => {
   const responseP = nyreFetch
-    .get("http://httpstat.us/random/400")
+    .get(`${HTTP_STATUS_BASE_URL}/400`)
     .then(handleInternalError)
     .then((r) => r.json());
 
@@ -23,7 +24,7 @@ test("properly handle 400", async (t) => {
 
 test("properly handle 401", async (t) => {
   const responseP = nyreFetch
-    .get("http://httpstat.us/random/401")
+    .get(`${HTTP_STATUS_BASE_URL}/401`)
     .then(handleInternalError)
     .then((r) => r.json());
 
@@ -33,7 +34,7 @@ test("properly handle 401", async (t) => {
 
 test("properly handle 402", async (t) => {
   const responseP = nyreFetch
-    .get("http://httpstat.us/random/402")
+    .get(`${HTTP_STATUS_BASE_URL}/402`)
     .then(handleInternalError)
     .then((r) => r.json());
 
@@ -43,7 +44,7 @@ test("properly handle 402", async (t) => {
 
 test("properly handle 403", async (t) => {
   const responseP = nyreFetch
-    .get("http://httpstat.us/random/403")
+    .get(`${HTTP_STATUS_BASE_URL}/403`)
     .then(handleInternalError)
     .then((r) => r.json());
 
@@ -53,7 +54,7 @@ test("properly handle 403", async (t) => {
 
 test("properly handle 404", async (t) => {
   const responseP = nyreFetch
-    .get("http://httpstat.us/random/404")
+    .get(`${HTTP_STATUS_BASE_URL}/404`)
     .then(handleInternalError)
     .then((r) => r.json());
 
@@ -63,7 +64,7 @@ test("properly handle 404", async (t) => {
 
 test("properly handle error 500", async (t) => {
   const response = nyreFetch
-    .get("http://httpstat.us/random/500")
+    .get(`${HTTP_STATUS_BASE_URL}/500`)
     .then(handleInternalError)
     .then((r) => r.json());
 
