@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "./index.ts"
+      - "README.md"
       - ".github/workflows/publish.yml"
       - "package.json"
   workflow_dispatch:
