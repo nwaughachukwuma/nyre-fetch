@@ -134,7 +134,6 @@ export function handleInternalError(r: Response) {
   throw new InternalError(r.statusText);
 }
 
-export type { Response };
 export function responseOk(r: Response) {
   if (r.ok) return r;
   throw new Error(
@@ -142,4 +141,5 @@ export function responseOk(r: Response) {
   );
 }
 
+export type { Response };
 export default nyreFetch;
