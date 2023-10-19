@@ -2,7 +2,7 @@ name: Publish
 on:
   pull_request:
     paths:
-      - "./index.ts"
+      - "index.ts"
       - "README.md"
       - ".github/workflows/publish.yml"
       - "package.json"
@@ -11,7 +11,7 @@ on:
     branches:
       - main
     paths:
-      - "./index.ts"
+      - "index.ts"
       - "README.md"
       - ".github/workflows/publish.yml"
       - "package.json"
