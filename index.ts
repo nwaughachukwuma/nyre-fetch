@@ -1,4 +1,5 @@
 declare const fetch: typeof import("undici").fetch;
+
 import type { PipelineOptions, Transform } from "node:stream";
 import type { RequestInit, Response } from "undici";
 import type { AbortSignal } from "abort-controller";
