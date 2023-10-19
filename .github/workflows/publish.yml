@@ -39,8 +39,6 @@ jobs:
 
           echo "TAG_BRANCH=$TAG_BRANCH" >> $GITHUB_ENV
 
-      - run: echo "${{ toJSON(env) }}"
-
   test:
     name: test on Node.js ${{ matrix.node-version }}
     runs-on: ubuntu-latest
@@ -83,8 +81,6 @@ jobs:
         with:
           name: lib
           path: lib
-        
-      - run: echo "${{ needs.prepare.outputs.TAG_BRANCH }}"
 
   publish:
     name: Publish to npmjs
