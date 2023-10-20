@@ -119,27 +119,17 @@ export function createClient(baseUrl: string) {
   return new Client(baseUrl);
 }
 
-export function handleInternalError(r: Response) {
-  class InternalError extends Error {
-    private cause: Response;
-    constructor(message: string) {
-      super(message);
-      this.name = "InternalError";
-      this.cause = r;
-    }
-    toString() {
-      return { cause: this.cause, message: this.message };
+export function responseOk(r: Response) {
+  class RequestError extends Error {
+    constructor() {
+      super(r.statusText);
+      this.stack = `Request failed with status: ${r.status} - ${r.statusText}`;
+      this.name = "RequestError";
     }
   }
-  if (r.ok) return r;
-  throw new InternalError(r.statusText);
-}
 
-export function responseOk(r: Response) {
   if (r.ok) return r;
-  throw new Error(
-    `HTTP Request Error - URL: ${r.url}, Headers: ${r.headers}, Status: ${r.status} ${r.statusText}`
-  );
+  throw new RequestError();
 }
 
 export type { Response };
